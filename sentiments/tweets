@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+import sys
+import helpers
+from analyzer import Analyzer
+from termcolor import colored
+
+def main():
+    #ensure proper usage
+    if len(sys.argv) != 2:
+        sys.exit("Usage: ./tweets screen_name")
+    #store the past tweets of twitter account in variable
+    tweets=helpers.get_user_timeline(sys.argv[1])
+    
+    # instantiate analyzer
+    analyzer = Analyzer()
+    #iterate through each tweet in twitter account history
+    for tweet in tweets:
+    # analyze word
+        score = analyzer.analyze(tweet)
+        if score > 0.0:
+            print(colored(str(score)+" "+tweet, "green"))
+        elif score < 0.0:
+            print(colored(str(score)+ " "+tweet,"red"))
+        else:
+            print(colored(str(score)+" "+tweet, "yellow"))
+
+if __name__ == "__main__":
+    main()
